@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Poll {
+  id           String    @id @default(cuid())
+  title        String
+  description  String    @default("")
+  options      String    // JSON: string[]
+  status       String    @default("open")
+  allowWriteIn      Boolean   @default(false)
+  deadline          DateTime?
+  adminHash         String
+  visible           Boolean   @default(true)
+  voterPasswordHash String?
+  createdAt    DateTime  @default(now())
+  ballots      Ballot[]
+}
+
+model Ballot {
+  id         String   @id @default(cuid())
+  pollId     String
+  poll       Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  rankings   String   // JSON: string[] — option names in ranked order
+  voterToken String
+  createdAt  DateTime @default(now())
+
+  @@unique([pollId, voterToken])
+}
