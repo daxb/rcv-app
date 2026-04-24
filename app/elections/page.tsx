@@ -7,21 +7,27 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 export default async function ElectionsPage() {
-  const polls = await prisma.poll.findMany({
-    where: { status: "open", visible: true },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      options: true,
-      deadline: true,
-      allowWriteIn: true,
-      voterPasswordHash: true,
-      createdAt: true,
-      _count: { select: { ballots: true } },
-    },
-  });
+  let polls;
+  try {
+    polls = await prisma.poll.findMany({
+      where: { status: "open", visible: true },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        options: true,
+        deadline: true,
+        allowWriteIn: true,
+        voterPasswordHash: true,
+        createdAt: true,
+        _count: { select: { ballots: true } },
+      },
+    });
+  } catch (e) {
+    console.error("[elections] prisma.poll.findMany failed:", e);
+    throw e;
+  }
 
   const formattedPolls = polls.map((p) => ({
     ...p,

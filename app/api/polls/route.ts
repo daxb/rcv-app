@@ -8,21 +8,27 @@ import { setAdminSession } from "@/lib/admin";
 
 // GET /api/polls — list open, visible polls
 export async function GET() {
-  const polls = await prisma.poll.findMany({
-    where: { status: "open", visible: true },
-    orderBy: { createdAt: "desc" },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      options: true,
-      deadline: true,
-      allowWriteIn: true,
-      voterPasswordHash: true,
-      createdAt: true,
-      _count: { select: { ballots: true } },
-    },
-  });
+  let polls;
+  try {
+    polls = await prisma.poll.findMany({
+      where: { status: "open", visible: true },
+      orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        options: true,
+        deadline: true,
+        allowWriteIn: true,
+        voterPasswordHash: true,
+        createdAt: true,
+        _count: { select: { ballots: true } },
+      },
+    });
+  } catch (e) {
+    console.error("[api/polls GET] prisma.poll.findMany failed:", e);
+    throw e;
+  }
 
   return NextResponse.json(
     polls.map((p) => ({
@@ -65,18 +71,24 @@ export async function POST(req: NextRequest) {
     ? await bcrypt.hash(voterPassword.trim(), 10)
     : null;
 
-  const poll = await prisma.poll.create({
-    data: {
-      title: title.trim(),
-      description: (description ?? "").trim(),
-      options: JSON.stringify(cleanOptions),
-      deadline: deadline ? new Date(deadline) : null,
-      allowWriteIn: allowWriteIn ?? false,
-      visible: visible ?? true,
-      adminHash,
-      voterPasswordHash,
-    },
-  });
+  let poll;
+  try {
+    poll = await prisma.poll.create({
+      data: {
+        title: title.trim(),
+        description: (description ?? "").trim(),
+        options: JSON.stringify(cleanOptions),
+        deadline: deadline ? new Date(deadline) : null,
+        allowWriteIn: allowWriteIn ?? false,
+        visible: visible ?? true,
+        adminHash,
+        voterPasswordHash,
+      },
+    });
+  } catch (e) {
+    console.error("[api/polls POST] prisma.poll.create failed:", e);
+    throw e;
+  }
 
   await setAdminSession(poll.id);
 
