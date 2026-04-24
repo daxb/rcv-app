@@ -35,10 +35,10 @@ export default async function AdminDashboardPage({
           ← All elections
         </Link>
         <div className="flex gap-3 text-sm">
-          <Link href={`/polls/${id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
+          <Link href={`/${id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
             Vote page
           </Link>
-          <Link href={`/polls/${id}/results`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
+          <Link href={`/${id}/results`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
             Results
           </Link>
         </div>

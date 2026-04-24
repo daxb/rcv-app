@@ -42,13 +42,13 @@ export default function ElectionCard({ poll }: Props) {
         </div>
         <div className="flex flex-col gap-2 shrink-0">
           <Link
-            href={`/polls/${poll.id}`}
+            href={`/${poll.id}`}
             className="bg-indigo-600 text-white text-sm px-4 py-1.5 rounded-lg hover:bg-indigo-700 transition-colors text-center"
           >
             Vote
           </Link>
           <Link
-            href={`/polls/${poll.id}/results`}
+            href={`/${poll.id}/results`}
             className="text-gray-500 dark:text-gray-400 text-sm px-4 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-center"
           >
             Results

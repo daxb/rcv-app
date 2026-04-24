@@ -54,7 +54,7 @@ export default function BallotReview({ pollId, ballotCount }: Props) {
         </h2>
         <div className="flex items-center gap-3">
           <span className="text-sm text-gray-500 dark:text-gray-400">{ballotCount} submitted</span>
-          <Link href={`/polls/${pollId}/results`} className="text-indigo-600 dark:text-indigo-400 text-sm hover:underline">
+          <Link href={`/${pollId}/results`} className="text-indigo-600 dark:text-indigo-400 text-sm hover:underline">
             View Results
           </Link>
         </div>

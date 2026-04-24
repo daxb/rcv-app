@@ -27,7 +27,7 @@ export default async function VotePage({
     poll.status === "closed" ||
     (poll.deadline != null && new Date() > poll.deadline);
 
-  if (isClosed) redirect(`/polls/${id}/results`);
+  if (isClosed) redirect(`/${id}/results`);
 
   const options = JSON.parse(poll.options) as string[];
   const voterToken = await getVoterToken();
@@ -71,7 +71,7 @@ export default async function VotePage({
         <div className="bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-xl p-6 text-center">
           <p className="text-green-800 dark:text-green-300 font-medium mb-3">You have already voted in this election.</p>
           <Link
-            href={`/polls/${id}/results`}
+            href={`/${id}/results`}
             className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
           >
             View Results

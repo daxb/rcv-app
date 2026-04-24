@@ -88,7 +88,7 @@ export default function RankingBallot({ pollId, options, allowWriteIn }: Props) 
       });
       const data = await res.json() as { error?: string };
       if (!res.ok) { setError(data.error ?? "Failed to submit vote."); return; }
-      router.push(`/polls/${pollId}/results`);
+      router.push(`/${pollId}/results`);
       router.refresh();
     } finally {
       setSubmitting(false);

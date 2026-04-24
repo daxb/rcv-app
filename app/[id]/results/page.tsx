@@ -63,7 +63,7 @@ export default async function ResultsPage({
           {!isClosed && (
             <div className="mt-4">
               <Link
-                href={`/polls/${id}`}
+                href={`/${id}`}
                 className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
               >
                 Be the first to vote
@@ -105,7 +105,7 @@ export default async function ResultsPage({
       {!isClosed && (
         <div className="mt-6">
           <Link
-            href={`/polls/${id}`}
+            href={`/${id}`}
             className="text-indigo-600 dark:text-indigo-400 hover:underline text-sm"
           >
             ← Back to voting
