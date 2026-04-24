@@ -6,7 +6,7 @@ import { runIRV } from "@/lib/irv";
 import RoundsViz from "@/components/RoundsViz";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 15;
 
 export default async function ResultsPage({
   params,
