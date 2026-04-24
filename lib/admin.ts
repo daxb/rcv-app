@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Verdant Coast LLC — https://verdantcoast.com
 import { cookies } from "next/headers";
 
 const MAX_AGE = 60 * 60 * 24 * 7; // 7 days

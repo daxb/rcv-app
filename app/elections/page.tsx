@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Verdant Coast LLC — https://verdantcoast.com
 import { prisma } from "@/lib/prisma";
 import ElectionCard from "@/components/ElectionCard";
 import Link from "next/link";

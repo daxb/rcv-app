@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Verdant Coast LLC — https://verdantcoast.com
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Verdant Coast LLC — https://verdantcoast.com
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { runIRV } from "@/lib/irv";
