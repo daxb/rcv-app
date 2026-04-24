@@ -3,8 +3,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
-import { randomBytes } from "crypto";
 import { setAdminSession } from "@/lib/admin";
+import { generateShortId } from "@/lib/pollId";
+import { generatePassphrase } from "@/lib/passphrase";
+
+const MAX_ID_ATTEMPTS = 5;
 
 // GET /api/polls — list open, visible polls
 export async function GET() {
@@ -65,29 +68,42 @@ export async function POST(req: NextRequest) {
   }
 
   const cleanOptions = options.map((o) => o.trim()).filter(Boolean);
-  const plainPassword = randomBytes(4).toString("hex"); // 8 hex chars
+  const plainPassword = generatePassphrase();
   const adminHash = await bcrypt.hash(plainPassword, 10);
   const voterPasswordHash = voterPassword?.trim()
     ? await bcrypt.hash(voterPassword.trim(), 10)
     : null;
 
   let poll;
-  try {
-    poll = await prisma.poll.create({
-      data: {
-        title: title.trim(),
-        description: (description ?? "").trim(),
-        options: JSON.stringify(cleanOptions),
-        deadline: deadline ? new Date(deadline) : null,
-        allowWriteIn: allowWriteIn ?? false,
-        visible: visible ?? true,
-        adminHash,
-        voterPasswordHash,
-      },
-    });
-  } catch (e) {
-    console.error("[api/polls POST] prisma.poll.create failed:", e);
-    throw e;
+  for (let attempt = 0; attempt < MAX_ID_ATTEMPTS; attempt++) {
+    const id = generateShortId();
+    try {
+      poll = await prisma.poll.create({
+        data: {
+          id,
+          title: title.trim(),
+          description: (description ?? "").trim(),
+          options: JSON.stringify(cleanOptions),
+          deadline: deadline ? new Date(deadline) : null,
+          allowWriteIn: allowWriteIn ?? false,
+          visible: visible ?? true,
+          adminHash,
+          voterPasswordHash,
+        },
+      });
+      break;
+    } catch (e) {
+      const isUniqueViolation =
+        typeof e === "object" && e !== null && "code" in e && (e as { code: string }).code === "P2002";
+      if (isUniqueViolation && attempt < MAX_ID_ATTEMPTS - 1) {
+        continue;
+      }
+      console.error("[api/polls POST] prisma.poll.create failed:", e);
+      throw e;
+    }
+  }
+  if (!poll) {
+    return NextResponse.json({ error: "Could not allocate a poll ID, please try again" }, { status: 500 });
   }
 
   await setAdminSession(poll.id);

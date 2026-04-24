@@ -42,9 +42,12 @@ export default async function VotePage({
 
   return (
     <div>
-      <div className="mb-2">
+      <div className="mb-2 flex items-center justify-between">
         <Link href="/elections" className="text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
           ← All elections
+        </Link>
+        <Link href={`/admin/${id}`} className="text-xs text-gray-400 dark:text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400">
+          Manage this election →
         </Link>
       </div>
       <div className="mb-6">

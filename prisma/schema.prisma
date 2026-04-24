@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Poll {
-  id           String    @id @default(cuid())
+  id           String    @id
   title        String
   description  String    @default("")
   options      String    // JSON: string[]

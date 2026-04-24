@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 const tabs = [
   { label: "Home", href: "/" },
   { label: "Open Elections", href: "/elections" },
+  { label: "My Elections", href: "/my-elections" },
+  { label: "Manage", href: "/manage" },
 ];
 
 export default function NavTabs() {

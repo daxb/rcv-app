@@ -4,6 +4,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { addMyPoll } from "@/lib/myPolls";
 
 const inputCls = "w-full border border-gray-300 dark:border-gray-700 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500";
 
@@ -46,6 +47,7 @@ export default function CreatePollForm() {
       });
       const data = await res.json() as { id?: string; adminPassword?: string; error?: string };
       if (!res.ok) { setError(data.error ?? "Something went wrong."); return; }
+      addMyPoll({ id: data.id!, title: title.trim(), password: data.adminPassword! });
       setCreated({ pollId: data.id!, password: data.adminPassword! });
     } finally {
       setLoading(false);
@@ -63,21 +65,29 @@ export default function CreatePollForm() {
     return (
       <div className="bg-white dark:bg-gray-900 rounded-xl border border-amber-300 dark:border-amber-700 p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Election Created!</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-          Save this admin password — it will only be shown once:
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+          Election ID
         </p>
-        <div className="bg-amber-50 dark:bg-amber-950 border border-amber-300 dark:border-amber-700 rounded-lg px-4 py-3 font-mono text-2xl font-bold text-amber-900 dark:text-amber-300 text-center tracking-widest mb-4 select-all">
+        <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-2 font-mono text-lg font-bold text-gray-900 dark:text-gray-100 text-center tracking-widest mb-4 select-all">
+          {created.pollId}
+        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+          Admin passphrase — save it, it will only be shown once:
+        </p>
+        <div className="bg-amber-50 dark:bg-amber-950 border border-amber-300 dark:border-amber-700 rounded-lg px-4 py-3 font-mono text-xl font-bold text-amber-900 dark:text-amber-300 text-center mb-3 select-all break-all">
           {created.password}
         </div>
         <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">
-          Use this password to manage candidates, configure settings, review votes, or close the election.
+          Saved in this browser under <strong>My Elections</strong>. Use the passphrase to manage candidates,
+          configure settings, review votes, or close the election — or to sign in from a different browser
+          via the <strong>Manage</strong> page.
         </p>
         <div className="flex gap-3">
           <button
             onClick={handleCopy}
             className="border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
           >
-            {copied ? "Copied!" : "Copy password"}
+            {copied ? "Copied!" : "Copy passphrase"}
           </button>
           <button
             onClick={() => router.push(`/admin/${created.pollId}/dashboard`)}
