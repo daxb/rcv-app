@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && prisma db push --accept-data-loss && next build",
-    "start": "next start",
+    "start": "next start 2>&1",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
