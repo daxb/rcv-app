@@ -1,10 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  output: "standalone",
-  outputFileTracingIncludes: {
-    "/**": ["./node_modules/.prisma/client/**/*"],
-  },
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;
