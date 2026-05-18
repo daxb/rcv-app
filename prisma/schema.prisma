@@ -10,9 +10,9 @@ datasource db {
 
 model Poll {
   id           String    @id
-  title        String
-  description  String    @default("")
-  options      String    // JSON: string[]
+  title        String    @db.Text
+  description  String    @default("") @db.Text
+  options      String    @db.Text // JSON: string[]
   status       String    @default("open")
   allowWriteIn      Boolean   @default(false)
   deadline          DateTime?
@@ -27,7 +27,7 @@ model Ballot {
   id         String   @id @default(cuid())
   pollId     String
   poll       Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
-  rankings   String   // JSON: string[] — option names in ranked order
+  rankings   String   @db.Text // JSON: string[] — option names in ranked order
   voterToken String
   createdAt  DateTime @default(now())
 
