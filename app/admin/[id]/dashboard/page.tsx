@@ -6,6 +6,7 @@ import { isAdminAuthenticated } from "@/lib/admin";
 import CandidateManager from "@/components/AdminDashboard/CandidateManager";
 import ConfigPanel from "@/components/AdminDashboard/ConfigPanel";
 import BallotReview from "@/components/AdminDashboard/BallotReview";
+import ShareButton from "@/components/AdminDashboard/ShareButton";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,7 @@ export default async function AdminDashboardPage({
           ← All elections
         </Link>
         <div className="flex gap-3 text-sm">
+          <ShareButton pollId={id} title={poll.title} />
           <Link href={`/${id}`} className="text-indigo-600 dark:text-indigo-400 hover:underline">
             Vote page
           </Link>
